@@ -1,0 +1,90 @@
+*{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.container{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 410px;
+	width: 350px;
+	margin-top: -205px;
+	margin-left: -175px;
+	background: #ccc;
+	display: grid;
+	grid-template-rows: 60px 50px 300px;
+}
+
+.center{
+	text-align: center;
+	line-height: 50px;
+	font-size: 25px;
+	font-weight: 900;
+	font-family: Arial;
+}
+
+.today{
+	background: #3ADF00!important;
+}
+/*上一个月或者下一个月的日子*/
+.not{
+	color: #a4a4a4;
+}
+
+/*月历头部，显示当前年份月份*/
+.container .header{
+	background: #facc2e;
+	display: grid;
+	grid-auto-rows: 60px;
+	grid-template-columns: 30px 30px 1fr 1fr 30px 30px;
+}
+
+.container .header .btn{
+	background: #F3F781;
+}
+
+.container .header .btn:hover{
+	background: #DF7401;
+}
+
+/*星期行，显示周一到周日的标识*/
+.container .week-bar{
+	background: #58FAF4;
+	display: grid;
+	grid-auto-rows: 50px;
+	grid-template-columns: repeat(7,1fr);
+}
+
+.container .week-bar .week{
+
+}
+
+/*日期表格*/
+.container .day{
+	background: #ddd;
+	display: grid;
+	/*grid-auto-rows: 50px;*/
+	grid-template-columns: repeat(7,50px);
+	grid-template-rows: repeat(6,50px);
+}
+
+.container .day .date1{
+	background: #eee;
+}
+
+.container .day .date2{
+	background: #ddd;
+}
+
+.container .day .saturday{
+	background: #f40;
+}
+
+.container .day .sunday{
+	background: #FE9A2E;
+}
+
+
+
