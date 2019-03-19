@@ -2,6 +2,11 @@
 	margin: 0;
 	padding: 0;
 	list-style: none;
+	/*background: #aaa;*/
+}
+
+body{
+	background: #ccc;
 }
 
 @keyframes show{
@@ -15,23 +20,36 @@
 }
 
 
-.container{
+.outer{
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	height: 900px;
-	width: 700px;
-	margin-top: -400px;
-	margin-left: -350px;
-	/*background: #ccc;*/
-	display: grid;
-	grid-template-rows: 1fr 1fr 1fr 6fr;
+	height: 1208px;
+	width: 900px;
+	margin-top: -604px;
+	margin-left: -450px;
 	overflow: hidden;
 }
 
-.logo{
-	background: #fff;
+.container{
+	position: absolute;
 	margin: 0 auto;
+	/*top: 50%;*/
+	left: 50%;
+	height: 1108px;
+	width: 700px;
+	/*margin-top: -404px;*/
+	margin-left: -350px;
+	/*background: #ccc;*/
+	display: grid;
+	grid-template-rows: 1fr 1fr 1fr 8fr;
+	/*overflow: hidden;*/
+}
+
+.logo{
+	/*background: #fff;*/
+	margin: 0 auto;
+	/*height: 100px;*/
 	z-index: 1000;
 }
 .logoImg{
@@ -107,12 +125,19 @@
 	position: relative;
 	top: -1000px;
 	/*animation: show 2s;*/
-	background: #ddd;
+	/*background: #ddd;*/
 	display: grid;
 	cursor: pointer;
 	/*grid-auto-rows: 50px;*/
 	grid-template-columns: repeat(7,100px);
 	grid-template-rows: repeat(6,100px);
+}
+
+.D{
+	position: relative;
+	/*display: grid;*/
+	/*grid-template-rows: repeat(3,1fr);*/
+	/*grid-template-columns: repeat(3,1fr);*/
 }
 
 .container .day .date1{
@@ -130,6 +155,46 @@
 .container .day .sunday{
 	background: #FE9A2E;
 }
+
+.disappear{
+    display: none;	
+}
+
+.note{
+	position: absolute;
+	width: 300px;
+	height: 330px;
+	display: grid;
+	grid-template-rows: 30px 1fr;
+	z-index: 100;
+	margin-left: -100px;
+	margin-top: -30px;
+}
+
+.triangle-up{
+	margin: 0 auto;
+	width: 0;
+	height: 0;
+	border-left: 30px solid transparent;
+	border-right: 30px solid transparent;
+	border-bottom: 30px solid #fff;
+	opacity: 1;
+}
+
+.notePad{
+	/*width: 200px;*/
+	/*height: 200px;*/
+	background: #fff;
+	border-radius: 20px;
+	opacity: 1;
+	font-size: 25px;
+	font-weight: 300px;
+}
+
+[dot=dot]{
+
+}
+
 
 
 

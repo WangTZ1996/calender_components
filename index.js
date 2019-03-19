@@ -9,10 +9,18 @@ var week_sym = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
 var firstDay;
 var now;
-var flag = 0;
+var flag = 0;//switchState函数的标志位
+var flagN = 0;
+var daliy;
+
 
 //dom动态生成html结构 
-var container = document.getElementsByClassName("container")[0];
+
+var outer = document.getElementsByClassName("outer")[0];
+    outer.className="outer";
+var container = document.createElement("div");
+    container.className="container";
+    outer.appendChild(container);
 var logo = document.createElement("div");
     logo.className="logo";
     container.appendChild(logo);
@@ -29,22 +37,29 @@ var day = document.createElement("div");
     container.appendChild(header);
     container.appendChild(week_bar);
     container.appendChild(day);
-var header_span;    
+var header_span;  
+
+
+    // outer.appendChild(container);  
 // 创建日期网格的函数
 function createDay(){
 	for(var i = 0;i < 42;i++){
 	 	var day_span = document.createElement("span");
 	 	if(i%7==0){
 	 		day_span.setAttribute("class","D center sunday");
+	 		// day_span.setAttribute("index",i);
 		    day.appendChild(day_span);
 	 	}else if(i==6||i==13||i==20||i==27||i==34||i==41){
 	 		day_span.setAttribute("class","D center saturday");
+	 		// day_span.setAttribute("index",i);
 		    day.appendChild(day_span);
 	 	}else if(i%2==0){
 	 		day_span.setAttribute("class","D center date1");
+	 		// day_span.setAttribute("index",i);
 		    day.appendChild(day_span);
 	 	}else{
 	 		day_span.setAttribute("class","D center date2");
+	 		// day_span.setAttribute("index",i);
 		    day.appendChild(day_span);
 	 	}
 	}
@@ -81,14 +96,10 @@ function createWeek(){
 	}
 };
 
-// 自执行一次绘制日历网格函数
-(function createTable(){
+// 绘制日历网格函数
 	createDay();
 	createHeader();
 	createWeek();
-})();
-
-// 
 
 // 更新年份
 function modify_year(){
@@ -116,6 +127,7 @@ function pre_Year(){
 		day_tab[i].innerHTML = " ";
 	}
 	print_Date(month);
+	flagN = 0;
 }
    
 function next_Year(){
@@ -131,6 +143,7 @@ function next_Year(){
 		day_tab[i].innerHTML = " ";
 	}
 	print_Date(month);
+	flagN = 0;
 }
 
 //更新月份 
@@ -166,6 +179,7 @@ function pre_Month(){
 	}
 	modify_month();
 	print_Date(month);
+	flagN = 0;
 }
 
 function next_Month(){
@@ -186,15 +200,17 @@ function next_Month(){
 	}
 	modify_month();
 	print_Date(month);
+	flagN = 0;
 }
 
 // 判断今年是否是润年
 function if_leap(year){
-	return (year%100==0?res=(year%400==0?1:0):res=(year%4==0?1:0));
+	return (year%100==0?
+		res=(year%400==0?1:0):
+		res=(year%4==0?1:0));
 }
 
 var day_in_month = [31,28+if_leap(year),31,30,31,30,31,31,30,31,30,31];
-
 // 获取每一个日历单元格的dom对象集合
 var day_tab = document.getElementsByClassName('D');
 // 获取显示年份的dom对象
@@ -214,7 +230,6 @@ function first_day_in_week(){
 		firstDay = (week_sym.indexOf(weeks)+1)-inFirstWeek
 	}
 }
-
 first_day_in_week();
 
 function print_Date(){
@@ -224,7 +239,6 @@ function print_Date(){
 		day_tab[f-1].innerHTML=i;
 	}
 }
-
 print_Date();
 
 function return_now(){
@@ -268,9 +282,9 @@ function switchState(){
 	else if(flag == 0){
 		show();
 		flag = 1;
+		// day_tab.removeChild(node);
 	}
 }
-
 
 
 
@@ -287,3 +301,60 @@ logoImg.addEventListener("click",switchState,false);
 
 // 测试代码，自动回滚时间
 // var timer = setInterval(pre_Month,20);
+
+var note = document.createElement("div");
+    note.className = "note";
+var up = document.createElement("div");
+    up.className = "triangle-up";
+var notePad = document.createElement("div");
+    notePad.className = "notePad"
+    note.appendChild(up);
+    note.appendChild(notePad);
+    // day_tab[34].appendChild(note);
+
+function showNote(){
+	if(flagN == 0){
+		this.appendChild(note);
+		flagN = 1;
+	}else if(this.hasChildNodes()){
+		if(flagN == 1){
+		this.removeChild(note);
+		flagN = 0;
+	    }
+	}
+}
+
+function createNote(){
+	daliy = {
+		"year" : year,
+		"month" : month,
+		"date" : this.date
+	}
+	notePad.innerHTML = "";
+}
+
+
+
+
+(function addNote(){
+	for(var i = 0;i <= 41;i++){
+		day_tab[i].addEventListener("click",showNote,false);
+		day_tab[i].addEventListener("click",createNote,false);
+	}
+})()
+
+
+// day_tab[5].addEventListener("click",showNote,false);
+
+
+
+
+
+
+
+
+
+
+
+
+
