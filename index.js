@@ -11,8 +11,8 @@ var firstDay;
 var now;
 var flag = 0;//switchState函数的标志位
 var flagN = 0;
-var daliy;
-
+var timeStamp;
+var myStorage = localStorage;
 
 //dom动态生成html结构 
 
@@ -222,6 +222,11 @@ var btn = document.getElementsByClassName('btn');
 // 获取日期第一行的单元格
 var week = document.getElementsByClassName('week');
 
+var edit = document.createElement("img");
+    edit.setAttribute("src","image/edit.png");
+    edit.className = "edit";
+
+
 function first_day_in_week(){
 	var inFirstWeek = today%7;
 	if((week_sym.indexOf(weeks)+1)<inFirstWeek){
@@ -233,9 +238,19 @@ function first_day_in_week(){
 first_day_in_week();
 
 function print_Date(){
+	for(var j = 0;j <42;j++){
+		day_tab[j].removeEventListener("click",showNote);
+		day_tab[j].removeEventListener("click",createNote);
+	}
 	var f = firstDay;
-	for(var i=1;i<=day_in_month[month-1];i++){
+	for(var i=1;i<=day_in_month[month-1]+1;i++){
 		f++;
+		if(i == (day_in_month[month-1]+1)){
+			day_tab[f-1].appendChild(edit);
+			break;
+		}
+		day_tab[f-1].addEventListener("click",showNote,false);
+		day_tab[f-1].addEventListener("click",createNote,false);
 		day_tab[f-1].innerHTML=i;
 	}
 }
@@ -297,6 +312,10 @@ btn[2].addEventListener("click",next_Month,false);
 // ruturnNow.addEventListener("click",return_now,false);
 day.addEventListener("dblclick",return_now,false);
 logoImg.addEventListener("click",switchState,false);
+edit.addEventListener("click",createNote,false);
+
+
+
 
 
 // 测试代码，自动回滚时间
@@ -325,23 +344,15 @@ function showNote(){
 }
 
 function createNote(){
-	daliy = {
-		"year" : year,
-		"month" : month,
-		"date" : this.date
-	}
-	notePad.innerHTML = "";
+	timeStamp = year +" "+ month +" "+ today+" ";
+	var message = notePad.innerHTML;
+	myStorage.setItem(timeStamp,message)
 }
 
 
 
 
-(function addNote(){
-	for(var i = 0;i <= 41;i++){
-		day_tab[i].addEventListener("click",showNote,false);
-		day_tab[i].addEventListener("click",createNote,false);
-	}
-})()
+
 
 
 // day_tab[5].addEventListener("click",showNote,false);

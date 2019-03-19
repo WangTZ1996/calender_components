@@ -24,9 +24,9 @@ body{
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	height: 1208px;
+	height: 1228px;
 	width: 900px;
-	margin-top: -604px;
+	margin-top: -614px;
 	margin-left: -450px;
 	overflow: hidden;
 }
@@ -193,6 +193,11 @@ body{
 
 [dot=dot]{
 
+}
+
+.edit{
+	width: 80px;
+	height: 80px;
 }
 
 
