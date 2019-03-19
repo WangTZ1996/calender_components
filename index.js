@@ -9,19 +9,27 @@ var week_sym = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
 var firstDay;
 var now;
+var flag = 0;
 
 //dom动态生成html结构 
 var container = document.getElementsByClassName("container")[0];
-    var header = document.createElement("div");
-        header.setAttribute("class","header");
-    var week_bar = document.createElement("div");
-        week_bar.setAttribute("class","week-bar");
-    var day = document.createElement("div");
-        day.setAttribute("class","day");
-        container.appendChild(header);
-        container.appendChild(week_bar);
-        container.appendChild(day);
-    var header_span;    
+var logo = document.createElement("div");
+    logo.className="logo";
+    container.appendChild(logo);
+var logoImg = document.createElement("img");
+    logoImg.setAttribute("src","image/calender_logo");
+    logoImg.setAttribute("class","logoImg");
+    logo.appendChild(logoImg);    
+var header = document.createElement("div");
+    header.setAttribute("class","header");
+var week_bar = document.createElement("div");
+    week_bar.setAttribute("class","week-bar");
+var day = document.createElement("div");
+    day.setAttribute("class","day");
+    container.appendChild(header);
+    container.appendChild(week_bar);
+    container.appendChild(day);
+var header_span;    
 // 创建日期网格的函数
 function createDay(){
 	for(var i = 0;i < 42;i++){
@@ -92,6 +100,9 @@ function modify_year(){
 }
 
 function pre_Year(){
+	if(document.getElementById("today")){
+		removeToday();
+	}
 	if((firstDay-((365+if_leap(year))%7))>=0){
 		firstDay = firstDay-((365+if_leap(year))%7);
 	}else if(firstDay-((365+if_leap(year))%7)<0){
@@ -108,6 +119,9 @@ function pre_Year(){
 }
    
 function next_Year(){
+	if(document.getElementById("today")){
+		removeToday();
+	}
 	firstDay = (firstDay+(365+if_leap(year+1)))%7;
 	year += 1; 
 	if_leap(year);
@@ -129,6 +143,9 @@ function modify_month(){
 }
 
 function pre_Month(){
+	if(document.getElementById("today")){
+		removeToday();
+	}
 	var m = month;
 	if((m-2)>=0){
 		firstDay = 7-(day_in_month[m-2]-firstDay)%7;
@@ -152,6 +169,9 @@ function pre_Month(){
 }
 
 function next_Month(){
+	if(document.getElementById("today")){
+		removeToday();
+	}
 	firstDay = (firstDay+day_in_month[month-1])%7;
 	month +=1;
 	for(var i = 0;i < 42;i++){
@@ -219,9 +239,40 @@ function return_now(){
 	first_day_in_week();
 	print_Date(month);
 	now = day_tab[firstDay+today-1];
-	now.setAttribute("class","D today center");
+	now.setAttribute("id","today");
 }
-return_now();
+
+
+function removeToday(){
+	var t = document.getElementById("today");
+	t.setAttribute("id","");
+}
+
+function hide(){
+	header.setAttribute("class","header hide");
+	week_bar.setAttribute("class","week-bar hide");
+	day.setAttribute("class","hide day");
+}
+
+function show(){
+	header.setAttribute("class","header show");
+	week_bar.setAttribute("class","week-bar show");
+	day.setAttribute("class","day show");
+}
+
+function switchState(){
+	if(flag == 1){
+		hide();
+		flag = 0;
+	}
+	else if(flag == 0){
+		show();
+		flag = 1;
+	}
+}
+
+
+
 
 var ruturnNow = document.getElementsByClassName("today")[0];
 
@@ -229,7 +280,10 @@ btn[0].addEventListener("click",pre_Year,false);
 btn[3].addEventListener("click",next_Year,false);
 btn[1].addEventListener("click",pre_Month,false);
 btn[2].addEventListener("click",next_Month,false);
-ruturnNow.addEventListener("click",return_now,false);
+// ruturnNow.addEventListener("click",return_now,false);
+day.addEventListener("dblclick",return_now,false);
+logoImg.addEventListener("click",switchState,false);
+
 
 // 测试代码，自动回滚时间
 // var timer = setInterval(pre_Month,20);

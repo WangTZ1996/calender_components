@@ -4,28 +4,51 @@
 	list-style: none;
 }
 
+@keyframes show{
+	from{ top: -1000px; }
+	to{ top: 0px; }
+}
+
+@keyframes hide{
+	from{ top: 0px; }
+	to{ top: -1000px; }
+}
+
+
 .container{
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	height: 400px;
-	width: 350px;
-	margin-top: -200px;
-	margin-left: -175px;
-	background: #ccc;
+	height: 900px;
+	width: 700px;
+	margin-top: -400px;
+	margin-left: -350px;
+	/*background: #ccc;*/
 	display: grid;
-	grid-template-rows: 1fr 1fr 6fr;
+	grid-template-rows: 1fr 1fr 1fr 6fr;
+	overflow: hidden;
+}
+
+.logo{
+	background: #fff;
+	margin: 0 auto;
+	z-index: 1000;
+}
+.logoImg{
+	width: 100px;
+	height: 100px;
+	cursor: pointer;
 }
 
 .center{
 	text-align: center;
-	line-height: 50px;
-	font-size: 25px;
+	line-height: 100px;
+	font-size: 50px;
 	font-weight: 900;
 	font-family: Arial;
 }
 
-.today{
+#today{
 	background: #3ADF00!important;
 	border-radius: 50%;
 	cursor: pointer;
@@ -39,10 +62,14 @@
 
 /*月历头部，显示当前年份月份*/
 .container .header{
+	position: relative;
+	top: -1000px;
+	/*animation: show 2s;*/
 	background: #facc2e;
 	display: grid;
-	grid-auto-rows: 50px;
-	grid-template-columns: 30px 30px 1fr 1fr 30px 30px;
+	grid-auto-rows: 100px;
+	grid-template-columns: 60px 60px 1fr 1fr 60px 60px;
+	/*grid-template-columns: repeat(6,1fr);*/
 }
 
 .container .header .btn{
@@ -56,23 +83,36 @@
 
 /*星期行，显示周一到周日的标识*/
 .container .week-bar{
+	position: relative;
+	top: -1000px;
+	/*animation: show 2s;*/
 	background: #58FAF4;
 	display: grid;
-	grid-auto-rows: 50px;
+	grid-auto-rows: 100px;
 	grid-template-columns: repeat(7,1fr);
 }
 
-.container .week-bar .week{
+.show{
+	animation: show 1s;
+	animation-fill-mode: forwards;
+}
 
+.hide{
+	animation: hide 1s;
+	animation-fill-mode: forwards;
 }
 
 /*日期表格*/
 .container .day{
+	position: relative;
+	top: -1000px;
+	/*animation: show 2s;*/
 	background: #ddd;
 	display: grid;
+	cursor: pointer;
 	/*grid-auto-rows: 50px;*/
-	grid-template-columns: repeat(7,50px);
-	grid-template-rows: repeat(6,50px);
+	grid-template-columns: repeat(7,100px);
+	grid-template-rows: repeat(6,100px);
 }
 
 .container .day .date1{
