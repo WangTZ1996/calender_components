@@ -8,16 +8,18 @@ var month_list = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","N
 var week_sym = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
 var firstDay;
+var thisDate;
 var now;
-var flag = 0;//switchState函数的标志位
+var flag = 0;  //switchState函数的标志位
 var flagN = 0;
+var flagS = 0;
 var timeStamp;
 var myStorage = localStorage;
+
 
 //dom动态生成html结构 
 
 var outer = document.getElementsByClassName("outer")[0];
-    outer.className="outer";
 var container = document.createElement("div");
     container.className="container";
     outer.appendChild(container);
@@ -198,8 +200,8 @@ function next_Month(){
 		day_in_month = [31,28+if_leap(year),31,30,31,30,31,31,30,31,30,31];
 		modify_year();
 	}
+	print_Date();
 	modify_month();
-	print_Date(month);
 	flagN = 0;
 }
 
@@ -237,21 +239,22 @@ function first_day_in_week(){
 }
 first_day_in_week();
 
+function getTheDate(){
+	thisDate = parseInt(this.innerText);
+	return thisDate;
+}
+
 function print_Date(){
 	for(var j = 0;j <42;j++){
-		day_tab[j].removeEventListener("click",showNote);
-		day_tab[j].removeEventListener("click",createNote);
+		day_tab[j].removeEventListener("click",showNote,false);
+		day_tab[j].removeEventListener("click",getTheDate,false);
 	}
 	var f = firstDay;
-	for(var i=1;i<=day_in_month[month-1]+1;i++){
+	for(var i=1;i<=day_in_month[month-1];i++){
 		f++;
-		if(i == (day_in_month[month-1]+1)){
-			day_tab[f-1].appendChild(edit);
-			break;
-		}
-		day_tab[f-1].addEventListener("click",showNote,false);
-		day_tab[f-1].addEventListener("click",createNote,false);
-		day_tab[f-1].innerHTML=i;
+		day_tab[f - 1].addEventListener("click",showNote,false);
+		day_tab[f - 1].addEventListener("click",getTheDate,false);
+		day_tab[f - 1].innerHTML=i;
 	}
 }
 print_Date();
@@ -269,6 +272,7 @@ function return_now(){
 	print_Date(month);
 	now = day_tab[firstDay+today-1];
 	now.setAttribute("id","today");
+	flagN = 0;
 }
 
 
@@ -293,11 +297,16 @@ function switchState(){
 	if(flag == 1){
 		hide();
 		flag = 0;
+			day_tab[parseInt(thisDate)+firstDay-1].removeChild(note);
+		    flagN = 0;
 	}
 	else if(flag == 0){
 		show();
 		flag = 1;
-		// day_tab.removeChild(node);
+		flagS = 0;
+		if(notePad.contains(input)){  //用contains（）方法判断notePad节点下有没有input节点。
+			notePad.removeChild(input);
+		}
 	}
 }
 
@@ -310,7 +319,7 @@ btn[3].addEventListener("click",next_Year,false);
 btn[1].addEventListener("click",pre_Month,false);
 btn[2].addEventListener("click",next_Month,false);
 // ruturnNow.addEventListener("click",return_now,false);
-day.addEventListener("dblclick",return_now,false);
+day.addEventListener("dblclick",return_now,true);
 logoImg.addEventListener("click",switchState,false);
 edit.addEventListener("click",createNote,false);
 
@@ -329,6 +338,9 @@ var notePad = document.createElement("div");
     notePad.className = "notePad"
     note.appendChild(up);
     note.appendChild(notePad);
+    notePad.appendChild(edit);
+var input = document.createElement("textarea");
+    input.className = "input";
     // day_tab[34].appendChild(note);
 
 function showNote(){
@@ -337,19 +349,52 @@ function showNote(){
 		flagN = 1;
 	}else if(this.hasChildNodes()){
 		if(flagN == 1){
+		if(notePad.contains(input)){  //用contains（）方法判断notePad节点下有没有input节点。
+			notePad.removeChild(input);
+		}
 		this.removeChild(note);
 		flagN = 0;
 	    }
+	    flagS = 1;
+    }
+    if(flagS === 0){
+		edit.setAttribute("src","image/edit.png");
+		flagS = 1;
+	}else if(flagS === 1){
+		edit.setAttribute("src","image/submit.png");
+		flagS = 0;
 	}
 }
 
+var message;
+
 function createNote(){
-	timeStamp = year +" "+ month +" "+ today+" ";
-	var message = notePad.innerHTML;
-	myStorage.setItem(timeStamp,message)
+	if(flagS === 0){
+		edit.setAttribute("src","image/edit.png");
+		flagS = 1;
+		notePad.removeChild(input);
+		input.className = "text";
+		notePad.appendChild(input);
+		timeStamp = year +"-"+ month +"-"+ thisDate;
+	    message = input.value;
+	    myStorage.setItem(timeStamp,message);
+	}else if(flagS === 1){
+		edit.setAttribute("src","image/submit.png");
+		flagS = 0;
+		notePad.appendChild(input);
+		input.className = "input readonly";
+		// input.value = " ";
+		input.value = " ";
+	}
+	// input.value = "";
+	
+	// alert(parseInt(this.innerText));
 }
 
 
+note.addEventListener("click",function(e){
+	e.stopPropagation()
+});
 
 
 
