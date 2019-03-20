@@ -15,6 +15,7 @@ var flagN = 0;
 var flagS = 0;
 var timeStamp;
 var myStorage = localStorage;
+var date = {};
 
 
 //dom动态生成html结构 
@@ -375,20 +376,16 @@ function createNote(){
 		notePad.removeChild(input);
 		input.className = "text";
 		notePad.appendChild(input);
-		timeStamp = year +"-"+ month +"-"+ thisDate;
+		timeStamp = year +"-"+ month +"-"+ thisDate+"."+2;
 	    message = input.value;
-	    myStorage.setItem(timeStamp,message);
+	    myStorage.setItem("date",date);
 	}else if(flagS === 1){
 		edit.setAttribute("src","image/submit.png");
 		flagS = 0;
 		notePad.appendChild(input);
 		input.className = "input readonly";
-		// input.value = " ";
 		input.value = " ";
 	}
-	// input.value = "";
-	
-	// alert(parseInt(this.innerText));
 }
 
 
@@ -397,10 +394,28 @@ note.addEventListener("click",function(e){
 });
 
 
-
-
-
 // day_tab[5].addEventListener("click",showNote,false);
+
+
+function createDate(){
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
