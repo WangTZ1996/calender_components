@@ -13,9 +13,18 @@ var now;
 var flag = 0;  //switchState函数的标志位
 var flagN = 0;
 var flagS = 0;
+var flagT = 0;
 var timeStamp;
 var myStorage = localStorage;
-var date = {};
+
+if(myStorage.data){
+	var data = myStorage.getItem("data");
+	data = JSON.parse(data);
+}else{
+	var data = {};
+	// data[timeStamp] = [];
+}
+
 
 
 //dom动态生成html结构 
@@ -253,8 +262,9 @@ function print_Date(){
 	var f = firstDay;
 	for(var i=1;i<=day_in_month[month-1];i++){
 		f++;
-		day_tab[f - 1].addEventListener("click",showNote,false);
 		day_tab[f - 1].addEventListener("click",getTheDate,false);
+		day_tab[f - 1].addEventListener("click",showNote,false);
+		day_tab[f - 1].addEventListener("click",noteAddData,false);
 		day_tab[f - 1].innerHTML=i;
 	}
 }
@@ -339,10 +349,23 @@ var notePad = document.createElement("div");
     notePad.className = "notePad"
     note.appendChild(up);
     note.appendChild(notePad);
+var noteMsg = document.createElement("div");
+    noteMsg.className = "noteMsg";
+var p0 = document.createElement("p");
+    p0.className = "noteP";
+var p1 = document.createElement("p");
+    p1.className = "noteP";
+var p2 = document.createElement("p");
+    p2.className = "noteP";
+    noteMsg.appendChild(p0);
+    noteMsg.appendChild(p1);
+    noteMsg.appendChild(p2);
+    notePad.appendChild(noteMsg);
     notePad.appendChild(edit);
 var input = document.createElement("textarea");
     input.className = "input";
     // day_tab[34].appendChild(note);
+
 
 function showNote(){
 	if(flagN == 0){
@@ -365,9 +388,9 @@ function showNote(){
 		edit.setAttribute("src","image/submit.png");
 		flagS = 0;
 	}
+	timeStamp = year +"-"+ month +"-"+ thisDate;
 }
 
-var message;
 
 function createNote(){
 	if(flagS === 0){
@@ -376,9 +399,9 @@ function createNote(){
 		notePad.removeChild(input);
 		input.className = "text";
 		notePad.appendChild(input);
-		timeStamp = year +"-"+ month +"-"+ thisDate+"."+2;
-	    message = input.value;
-	    myStorage.setItem("date",date);
+		createData();
+	    data = JSON.stringify(data);
+	    myStorage.setItem("data",data);
 	}else if(flagS === 1){
 		edit.setAttribute("src","image/submit.png");
 		flagS = 0;
@@ -388,30 +411,47 @@ function createNote(){
 	}
 }
 
-
 note.addEventListener("click",function(e){
 	e.stopPropagation()
 });
 
-
-// day_tab[5].addEventListener("click",showNote,false);
-
-
-function createDate(){
-
+function createData(){
+	if(typeof(data) == "string"){
+		data = JSON.parse(data);
+	}
+	if(data[timeStamp] == {} || typeof(data[timeStamp]) == "undefined"){
+		data[timeStamp] = [];
+	}
+	if(input.value != " " && input.value != "  "){
+		data[timeStamp].push(input.value)
+	}
+	return data;
 }
 
+function medi(){
+	this.addEventListener("click",noteAddData,false);
+	noteAddData();
+}
 
-
-
-
-
-
-
-
-
-
-
+function noteAddData(){
+	var n,
+	    p = document.getElementsByTagName("p");
+	    p[0].innerHTML = "";
+	    p[1].innerHTML = "";
+	    p[2].innerHTML = "";
+	    // for(var j = 0;j < 3;j++){
+	    // 	p[j].innerHTML = "";
+	    // }
+	if(typeof(data) === "string"){
+		data = JSON.parse(data);
+	}
+	if(data[timeStamp] !== "undefined"){
+		    n = data[timeStamp].length;
+		    for(var i = 0;i < n;i++){
+		    p[i].innerHTML = data[timeStamp][i];
+	    }
+	}
+}
 
 
 
